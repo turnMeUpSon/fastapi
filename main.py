@@ -7,7 +7,7 @@ from fastapi import HTTPException
 from models import Gender
 from models import Role
 from models import User
-from models import userUpdateRequest
+from models import UserUpdateRequest
 
 app = FastAPI()
 
@@ -52,7 +52,7 @@ async def fetch_users():
 @app.post("/api/v1/users")
 async def register_user(user: User):
     db.append(user)
-    return {"id": user.id}
+    return {"id": user.uid}
 
 
 @app.delete("/api/v1/users/{user_id}")
@@ -68,9 +68,9 @@ async def delete_user(user_id: UUID):
 
 
 @app.put("/api/v1/users/{user_id}")
-async def update_user(user_update: userUpdateRequest, user_id: UUID):
+async def update_user(user_update: UserUpdateRequest, user_id: UUID):
     for user in db:
-        if user.id == user_id:
+        if user.uid == user_id:
             if user_update.first_name is not None:
                 user.first_name = user_update.first_name
             if user_update.last_name is not None:
